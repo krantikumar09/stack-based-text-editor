@@ -8,9 +8,9 @@ class DynamicStackBasedTextEditor:
         - redo_stack: to store actions for redo
         """
         self.text = ""
-        self.undo_stack = []  # Stack to track actions for undo
-        self.redo_stack = []  # Stack to track actions for redo
-        self.current_file = None  # Stores the path to the current file
+        self.undo_stack = []  
+        self.redo_stack = []  
+        self.current_file = None  
 
     def create_file(self, file_path):
         """
@@ -23,7 +23,7 @@ class DynamicStackBasedTextEditor:
             print(f"File '{file_path}' already exists.")
         else:
             with open(file_path, 'w') as file:
-                pass  # Creates an empty file
+                pass  
             self.current_file = file_path
             self.text = ""
             self.undo_stack.clear()
@@ -31,12 +31,6 @@ class DynamicStackBasedTextEditor:
             print(f"New file '{file_path}' created and loaded.")
 
     def load_file(self, file_path):
-        """
-        Loads text from an existing file.
-        
-        Parameters:
-            file_path (str): Path to the file to be loaded.
-        """
         if os.path.exists(file_path):
             with open(file_path, 'r') as file:
                 self.text = file.read()
@@ -46,12 +40,6 @@ class DynamicStackBasedTextEditor:
             print(f"File '{file_path}' not found.")
 
     def save_file(self, file_path=None):
-        """
-        Saves the current text to a file. If no file path is provided, saves to the current file.
-        
-        Parameters:
-            file_path (str): Path to the file to save text.
-        """
         if file_path:
             self.current_file = file_path
         
@@ -63,12 +51,6 @@ class DynamicStackBasedTextEditor:
             print("No file specified. Use 'save <filename>' to specify a file.")
 
     def insert(self, new_text):
-        """
-        Inserts new text at the end of the current text with a space if text already exists.
-        
-        Parameters:
-            new_text (str): The text to be inserted.
-        """
         if self.text:
             new_text = " " + new_text
 
@@ -78,12 +60,6 @@ class DynamicStackBasedTextEditor:
         print(f"Inserted: '{new_text}' -> Current Text: '{self.text}'")
 
     def delete_text(self, text_to_delete):
-        """
-        Deletes all instances of the specified text from the current text.
-        
-        Parameters:
-            text_to_delete (str): The specific text to be deleted.
-        """
         if text_to_delete in self.text:
             occurrences = [pos for pos in range(len(self.text)) if self.text.startswith(text_to_delete, pos)]
             self.undo_stack.append(("delete_text", text_to_delete, occurrences))
@@ -95,9 +71,6 @@ class DynamicStackBasedTextEditor:
             print(f"Text '{text_to_delete}' not found in current text.")
 
     def undo(self):
-        """
-        Undoes the last action.
-        """
         if not self.undo_stack:
             print("Nothing to undo!")
             return
@@ -118,9 +91,6 @@ class DynamicStackBasedTextEditor:
             print(f"Undo Delete Text -> Current Text: '{self.text}'")
 
     def redo(self):
-        """
-        Redoes the last undone action.
-        """
         if not self.redo_stack:
             print("Nothing to redo!")
             return
@@ -140,13 +110,9 @@ class DynamicStackBasedTextEditor:
             print(f"Redo Delete Text -> Current Text: '{self.text}'")
 
     def display_text(self):
-        """
-        Displays the current text in the editor.
-        """
         print(f"Current Text: '{self.text}'")
 
 
-# Command-line Interface
 def main():
     editor = DynamicStackBasedTextEditor()
     
